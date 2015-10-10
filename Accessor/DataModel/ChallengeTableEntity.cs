@@ -28,5 +28,6 @@ namespace Accessor.DataModel
         public string Description { get; set; }
         public string ContentType { get; set; }
         public string ContentUri { get; set; }
+        public Guid? ParentId { get; set; }
         }
     }

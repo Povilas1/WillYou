@@ -57,6 +57,7 @@ namespace Accessor.Controllers
                 Description = challenge.Description,
                 ContentType = challenge.ContentType,
                 ContentUri = challenge.ContentUri,
+                ParentId = challenge.ParentId,
             };
 
             var tableClient = s_storageAccount.Value.CreateCloudTableClient();
@@ -103,6 +104,7 @@ namespace Accessor.Controllers
                 Description = x.Description,
                 ContentType = x.ContentType,
                 ContentUri = x.ContentUri,
+                ParentId = x.ParentId,
                 }).ToList();
 
             //List<Challenge> challenges = new List<Challenge>
