@@ -18,15 +18,9 @@ namespace Accessor.Controllers
     {
     public class ChallengesController : ApiController
         {
-        private static Lazy<CloudStorageAccount> s_storageAccount = new Lazy<CloudStorageAccount>(() => 
-            {
-            var connectionString = ConfigurationManager.AppSettings["Storage.ConnectionString"];
-            return CloudStorageAccount.Parse(connectionString);
-            }); 
-
         public HttpResponseMessage Get()
             {
-            var json = JsonConvert.SerializeObject (GetAllChallenges (s_storageAccount.Value));
+            var json = JsonConvert.SerializeObject (GetAllChallenges ());
 
             return new HttpResponseMessage ()
                 {
@@ -36,7 +30,7 @@ namespace Accessor.Controllers
 
         public HttpResponseMessage Get(int id)
             {
-            var json = JsonConvert.SerializeObject (GetAllChallenges (s_storageAccount.Value));
+            var json = JsonConvert.SerializeObject (GetAllChallenges ());
 
             return new HttpResponseMessage ()
             {
@@ -60,7 +54,7 @@ namespace Accessor.Controllers
                 ParentId = challenge.ParentId,
             };
 
-            var tableClient = s_storageAccount.Value.CreateCloudTableClient();
+            var tableClient = StorageProvider.GetTableClient();
             var table = tableClient.GetTableReference("challenges");
 
             table.CreateIfNotExists();
@@ -72,11 +66,11 @@ namespace Accessor.Controllers
             return JsonConvert.DeserializeObject<Challenge> (json);
             }
 
-        private List<Challenge> GetAllChallenges(CloudStorageAccount storageAccount)
+        private List<Challenge> GetAllChallenges()
             {
             // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient ();
-            var tableClient = storageAccount.CreateCloudTableClient();
+            var blobClient = StorageProvider.GetBlobClient();
+            var tableClient = StorageProvider.GetTableClient();
 
             // Retrieve a reference to a container.
             CloudBlobContainer container = blobClient.GetContainerReference ("challenges");
