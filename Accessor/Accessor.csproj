@@ -203,6 +203,7 @@
     <Compile Include="Some stuff\Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Some stuff\Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Controllers\UploadChallengeController.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="WebRole.cs" />
   </ItemGroup>
