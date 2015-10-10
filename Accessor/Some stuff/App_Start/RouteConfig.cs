@@ -22,6 +22,10 @@ namespace Accessor
                 name: "Challenges",
                 url: "Challenges/{id}",
                 defaults: new { controller = "Challenges", action = "Get", id = UrlParameter.Optional });
+            routes.MapRoute (
+                name: "Repository",
+                url: "Repository/{id}",
+                defaults: new { controller = "Repository", action = "Get", id = UrlParameter.Optional });
             }
         }
     }

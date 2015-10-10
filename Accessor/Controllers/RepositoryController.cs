@@ -12,14 +12,30 @@ namespace Accessor.Controllers
         {
         public HttpResponseMessage Get()
             {
+            var blobClient = StorageProvider.GetBlobClient();
+            var container = blobClient.GetContainerReference("challenges");
 
-
-            //var json = JsonConvert.SerializeObject ();
+            var blob = container.GetBlockBlobReference(Guid.NewGuid().ToString());
+            var uri = blob.Uri.ToString();
 
             return new HttpResponseMessage ()
+                {
+                Content = new StringContent (uri)
+                };
+            }
+
+        public HttpResponseMessage Get(string id)
             {
-                Content = new StringContent (json)
-            };
+            var blobClient = StorageProvider.GetBlobClient ();
+            var container = blobClient.GetContainerReference ("challenges");
+
+            var blob = container.GetBlockBlobReference (Guid.NewGuid ().ToString ());
+            var uri = blob.Uri.ToString ();
+
+            return new HttpResponseMessage ()
+                {
+                Content = new StringContent (uri)
+                };
             }
 
         }
