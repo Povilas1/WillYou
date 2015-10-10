@@ -24,5 +24,6 @@ namespace Accessor.Models
         public string Description { get; set; }
         public string ContentType { get; set; }
         public string ContentUri { get; set; }
+        public Guid? ParentId { get; set; }
         }
     }
