@@ -18,6 +18,10 @@ namespace Accessor
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute (
+                name: "Challenges",
+                url: "Challenges/{id}",
+                defaults: new { controller = "Challenges", action = "Get", id = UrlParameter.Optional });
             }
         }
     }
