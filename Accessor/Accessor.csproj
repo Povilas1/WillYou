@@ -187,7 +187,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModel\Challenge.cs" />
+    <Compile Include="DataModel\ChallengeTableEntity.cs" />
     <Compile Include="Some stuff\App_Start\FilterConfig.cs" />
     <Compile Include="Some stuff\App_Start\IdentityConfig.cs" />
     <Compile Include="Some stuff\App_Start\RouteConfig.cs" />

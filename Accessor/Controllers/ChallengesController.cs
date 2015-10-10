@@ -12,6 +12,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Threading.Tasks;
 
 namespace Accessor.Controllers
     {
@@ -35,10 +36,7 @@ namespace Accessor.Controllers
 
         public HttpResponseMessage Get(int id)
             {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse (
-                ConfigurationManager.AppSettings["Storage.ConnectionString"]);
-
-            var json = JsonConvert.SerializeObject (GetAllChallenges (storageAccount));
+            var json = JsonConvert.SerializeObject (GetAllChallenges (s_storageAccount.Value));
 
             return new HttpResponseMessage ()
             {
@@ -46,11 +44,26 @@ namespace Accessor.Controllers
             };
             }
 
-        public void Post()
+        public async Task Post()
             {
             string json = Request.Content.ReadAsStringAsync ().Result;
             Challenge challenge = DeserializeChallenges (json);
-            //do smth with this challenge
+            ChallengeTableEntity entity = new ChallengeTableEntity
+            {
+                Id = challenge.Id,
+                AuthorId = challenge.AuthorId,
+                Name = challenge.Name,
+                Rating = challenge.Rating,
+                Description = challenge.Description,
+                ContentType = challenge.ContentType,
+                ContentUri = challenge.ContentUri,
+            };
+
+            var tableClient = s_storageAccount.Value.CreateCloudTableClient();
+            var table = tableClient.GetTableReference("challenges");
+
+            table.CreateIfNotExists();
+            await table.ExecuteAsync(TableOperation.Insert(entity));
             }
 
         private Challenge DeserializeChallenges(string json)
