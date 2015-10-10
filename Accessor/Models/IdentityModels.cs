@@ -29,5 +29,7 @@ namespace Accessor.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Accessor.Models.Challenge> Challenges { get; set; }
     }
 }
