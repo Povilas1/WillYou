@@ -17,12 +17,15 @@ namespace Accessor.Controllers
     {
     public class ChallengesController : ApiController
         {
+        private static Lazy<CloudStorageAccount> s_storageAccount = new Lazy<CloudStorageAccount>(() => 
+            {
+            var connectionString = ConfigurationManager.AppSettings["Storage.ConnectionString"];
+            return CloudStorageAccount.Parse(connectionString);
+            }); 
+
         public HttpResponseMessage Get()
             {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse (
-                ConfigurationManager.AppSettings["Storage.ConnectionString"]);
-
-            var json = JsonConvert.SerializeObject (GetAllChallenges (storageAccount));
+            var json = JsonConvert.SerializeObject (GetAllChallenges (s_storageAccount.Value));
 
             return new HttpResponseMessage ()
                 {
@@ -41,6 +44,18 @@ namespace Accessor.Controllers
             {
                 Content = new StringContent (json)
             };
+            }
+
+        public void Post()
+            {
+            string json = Request.Content.ReadAsStringAsync ().Result;
+            Challenge challenge = DeserializeChallenges (json);
+            //do smth with this challenge
+            }
+
+        private Challenge DeserializeChallenges(string json)
+            {
+            return JsonConvert.DeserializeObject<Challenge> (json);
             }
 
         private List<Challenge> GetAllChallenges(CloudStorageAccount storageAccount)
